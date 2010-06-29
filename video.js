@@ -19,7 +19,7 @@ along with VideoJS.  If not, see <http://www.gnu.org/licenses/>.
 var videoJSPlayers = new Array();
 
 // Using jresig's Class implementation http://ejohn.org/blog/simple-javascript-inheritance/
-(function(){var initializing=false, fnTest=/xyz/.test(function(){xyz;}) ? /\b_super\b/ : /.*/; this.Class = function(){}; Class.extend = function(prop) { var _super = this.prototype; initializing = true; var prototype = new this(); initializing = false; for (var name in prop) { prototype[name] = typeof prop[name] == "function" && typeof _super[name] == "function" && fnTest.test(prop[name]) ? (function(name, fn){ return function() { var tmp = this._super; this._super = _super[name]; var ret = fn.apply(this, arguments); this._super = tmp; return ret; }; })(name, prop[name]) : prop[name]; } function Class() { if ( !initializing && this.init ) this.init.apply(this, arguments); } Class.prototype = prototype; Class.constructor = Class; Class.extend = arguments.callee; return Class;};})();
+(function(){var initializing=false, fnTest=/xyz/.test(function(){xyz;}) ? (/\b_super\b/) : /.*/; this.Class = function(){}; Class.extend = function(prop) { var _super = this.prototype; initializing = true; var prototype = new this(); initializing = false; for (var name in prop) { prototype[name] = typeof prop[name] == "function" && typeof _super[name] == "function" && fnTest.test(prop[name]) ? (function(name, fn){ return function() { var tmp = this._super; this._super = _super[name]; var ret = fn.apply(this, arguments); this._super = tmp; return ret; }; })(name, prop[name]) : prop[name]; } function Class() { if ( !initializing && this.init ) this.init.apply(this, arguments); } Class.prototype = prototype; Class.constructor = Class; Class.extend = arguments.callee; return Class;};})();
 
 // Video JS Player Class
 var VideoJS = Class.extend({
@@ -44,7 +44,7 @@ var VideoJS = Class.extend({
       linksHiding: true // Hide download links when video is supported
     };
     // Override default options with set options
-    if (typeof setOptions == "object") _V_.merge(this.options, setOptions);
+    if (typeof setOptions == "object") { _V_.merge(this.options, setOptions); }
 
     this.box = this.video.parentNode;
     this.flashFallback = this.getFlashFallback();
@@ -58,7 +58,7 @@ var VideoJS = Class.extend({
     // Check if browser can play HTML5 video
     if (VideoJS.browserSupportsVideo()) {
       // Force flash fallback when there's no supported source
-      if (this.canPlaySource() == false) {
+      if (this.canPlaySource() === false) {
         this.replaceWithFlash();
         return;
       }
@@ -109,7 +109,7 @@ var VideoJS = Class.extend({
     // Make a click on the video act like a click on the play button.
     this.video.addEventListener("click", this.onPlayControlClick.context(this), false);
     // Make a click on the poster act like a click on the play button.
-    if (this.poster) this.poster.addEventListener("click", this.onPlayControlClick.context(this), false);
+    if (this.poster) { this.poster.addEventListener("click", this.onPlayControlClick.context(this), false); }
 
     // Listen for drags on the progress bar
     this.progressHolder.addEventListener("mousedown", this.onProgressHolderMouseDown.context(this), false);
@@ -134,9 +134,9 @@ var VideoJS = Class.extend({
     this.video.addEventListener("mouseout", this.onVideoMouseOut.context(this), false);
 
     // Listen for the mouse move the poster image. Used to reveal the controller.
-    if (this.poster) this.poster.addEventListener("mousemove", this.onVideoMouseMove.context(this), false);
+    if (this.poster) { this.poster.addEventListener("mousemove", this.onVideoMouseMove.context(this), false); }
     // Listen for the mouse moving out of the poster image. Used to hide the controller.
-    if (this.poster) this.poster.addEventListener("mouseout", this.onVideoMouseOut.context(this), false);
+    if (this.poster) { this.poster.addEventListener("mouseout", this.onVideoMouseOut.context(this), false); }
 
     // Have to add the mouseout to the controller too or it may not hide.
     // For some reason the same isn't needed for mouseover
@@ -156,7 +156,7 @@ var VideoJS = Class.extend({
     }.context(this);
 
     // Support older browsers that used autobuffer
-    this.fixPreloading()
+    this.fixPreloading();
   },
   
   // Support older browsers that used "autobuffer"
@@ -214,7 +214,7 @@ var VideoJS = Class.extend({
 
     // Create the loading progress display
     this.loadProgress = _V_.createElement("li", { className: "vjs-load-progress" });
-    this.progressHolder.appendChild(this.loadProgress)
+    this.progressHolder.appendChild(this.loadProgress);
 
     // Create the playing progress display
     this.playProgress = _V_.createElement("li", { className: "vjs-play-progress" });
@@ -242,7 +242,7 @@ var VideoJS = Class.extend({
       innerHTML: "<ul><li></li><li></li><li></li><li></li><li></li><li></li></ul>"
     });
     this.controls.appendChild(this.volumeControl);
-    this.volumeDisplay = this.volumeControl.children[0]
+    this.volumeDisplay = this.volumeControl.children[0];
 
     // Crete the fullscreen control
     this.fullscreenControl = _V_.createElement("li", {
@@ -259,14 +259,14 @@ var VideoJS = Class.extend({
 
   // Hide no-video download paragraph
   hideLinksFallback: function(){
-    if (this.options.linksHiding && this.linksFallback) this.linksFallback.style.display = "none";
+    if (this.options.linksHiding && this.linksFallback) { this.linksFallback.style.display = "none"; }
   },
 
   getFlashFallback: function(){
-    if (VideoJS.isIE()) return;
+    if (VideoJS.isIE()) { return; }
     var children = this.box.getElementsByClassName("vjs-flash-fallback");
     for (var i=0,j=children.length; i<j; i++) {
-      return children[i];
+       return children[i];
     }
   },
 
@@ -287,7 +287,7 @@ var VideoJS = Class.extend({
   // Place controller relative to the video's position
   positionController: function(){
     // Make sure the controls are visible
-    if (this.controls.style.display == 'none') return;
+    if (this.controls.style.display == 'none') { return; }
 
     if (this.videoIsFullScreen) {
       this.box.style.width = "";
@@ -313,7 +313,7 @@ var VideoJS = Class.extend({
 
   // Hide the controller
   hideController: function(){
-    if (this.options.controlsHiding) this.controls.style.display = "none";
+    if (this.options.controlsHiding) {this.controls.style.display = "none";}
   },
 
   // Update poster source from attribute or fallback image
@@ -321,7 +321,7 @@ var VideoJS = Class.extend({
   updatePosterSource: function(){
     if (!this.video.poster) {
       var images = this.video.getElementsByTagName("img");
-      if (images.length > 0) this.video.poster = images[0].src;
+      if (images.length > 0) {this.video.poster = images[0].src;}
     }
   },
 
@@ -343,7 +343,7 @@ var VideoJS = Class.extend({
 
   // Add the video poster to the video's container, to fix autobuffer/preload bug
   showPoster: function(){
-    if (!this.poster) return;
+    if (!this.poster) {return;}
     this.poster.style.display = "block";
     this.positionPoster();
   },
@@ -351,13 +351,13 @@ var VideoJS = Class.extend({
   // Size the poster image
   positionPoster: function(){
     // Only if the poster is visible
-    if (this.poster == false || this.poster.style.display == 'none') return;
+    if (this.poster === false || this.poster.style.display == 'none') {return;}
     this.poster.style.height = this.video.offsetHeight + "px";
     this.poster.style.width = this.video.offsetWidth + "px";
   },
 
   hidePoster: function(){
-    if (!this.poster) return;
+    if (!this.poster) {return;}
     this.poster.style.display = "none";
   },
 
@@ -437,7 +437,7 @@ var VideoJS = Class.extend({
   },
 
   updateLoadProgress: function(){
-    if (this.controls.style.display == 'none') return;
+    if (this.controls.style.display == 'none') {return;}
     this.loadProgress.style.width = (this.percentLoaded * (_V_.getComputedStyleValue(this.progressHolder, "width").replace("px", ""))) + "px";
   },
 
@@ -546,7 +546,7 @@ var VideoJS = Class.extend({
   
   // Get the space between controls. For more flexible styling.
   getControlsPadding: function(){
-    return _V_.findPosX(this.playControl) - _V_.findPosX(this.controls)
+    return _V_.findPosX(this.playControl) - _V_.findPosX(this.controls);
   },
   
   // When dynamically placing controls, if there are borders on the controls, it can break to a new line.
@@ -568,7 +568,7 @@ var VideoJS = Class.extend({
 
   // Ajust the play progress bar's width based on the current play time
   updatePlayProgress: function(){
-    if (this.controls.style.display == 'none') return;
+    if (this.controls.style.display == 'none') {return;}
     this.playProgress.style.width = ((this.video.currentTime / this.video.duration) * (_V_.getComputedStyleValue(this.progressHolder, "width").replace("px", ""))) + "px";
     this.updateTimeDisplay();
   },
@@ -588,7 +588,7 @@ var VideoJS = Class.extend({
   // Update the displayed time (00:00)
   updateTimeDisplay: function(){
     this.currentTimeDisplay.innerHTML = _V_.formatTime(this.video.currentTime);
-    if (this.video.duration) this.durationDisplay.innerHTML = _V_.formatTime(this.video.duration);
+    if (this.video.duration) {this.durationDisplay.innerHTML = _V_.formatTime(this.video.duration);}
   },
 
   // Set a new volume based on where the user clicked on the volume control
@@ -608,7 +608,7 @@ var VideoJS = Class.extend({
     var volNum = Math.ceil(this.video.volume * 6);
     for(var i=0; i<6; i++) {
       if (i < volNum) {
-        _V_.addClass(this.volumeDisplay.children[i], "vjs-volume-level-on")
+        _V_.addClass(this.volumeDisplay.children[i], "vjs-volume-level-on");
       } else {
         _V_.removeClass(this.volumeDisplay.children[i], "vjs-volume-level-on");
       }
@@ -673,17 +673,17 @@ var VideoJS = Class.extend({
   flashVersionSupported: function(){
     return VideoJS.getFlashVersion() >= this.options.flashVersion;
   }
-})
+});
 
 // Convenience Functions (mini library)
 // Functions not specific to video or VideoJS and could be replaced with a library like jQuery
 var _V_ = {
   addClass: function(element, classToAdd){
-    if (element.className.split(/\s+/).lastIndexOf(classToAdd) == -1) element.className = element.className == "" ? classToAdd : element.className + " " + classToAdd;
+    if (element.className.split(/\s+/).lastIndexOf(classToAdd) == -1) {element.className = element.className === "" ? classToAdd : element.className + " " + classToAdd;}
   },
 
   removeClass: function(element, classToRemove){
-    if (element.className.indexOf(classToRemove) == -1) return;
+    if (element.className.indexOf(classToRemove) == -1) {return;}
     var classNames = element.className.split(/\s+/);
     classNames.splice(classNames.lastIndexOf(classToRemove),1);
     element.className = classNames.join(" ");
@@ -735,7 +735,7 @@ var _V_ = {
   getComputedStyleValue: function(element, style){
     return window.getComputedStyle(element, null).getPropertyValue(style);
   }
-}
+};
 
 // Class Methods
 
@@ -749,17 +749,17 @@ VideoJS.setup = function(options){
       videoJSPlayers[i] = new VideoJS(videoTag, options);
     }
   }
-}
+};
 
 // Check if the browser supports video.
 VideoJS.browserSupportsVideo = function() {
-  if (typeof VideoJS.videoSupport != "undefined") return VideoJS.videoSupport;
+  if (typeof VideoJS.videoSupport != "undefined") {return VideoJS.videoSupport;}
   return VideoJS.videoSupport = !!document.createElement('video').canPlayType;
-}
+};
 
 VideoJS.getFlashVersion = function(){
   // Cache Version
-  if (typeof VideoJS.flashVersion != "undefined") return VideoJS.flashVersion;
+  if (typeof VideoJS.flashVersion != "undefined") {return VideoJS.flashVersion;}
   var version = 0;
   if (typeof navigator.plugins != "undefined" && typeof navigator.plugins["Shockwave Flash"] == "object") {
     desc = navigator.plugins["Shockwave Flash"].description;
@@ -776,17 +776,17 @@ VideoJS.getFlashVersion = function(){
     catch(e) {}
   }
   return VideoJS.flashVersion = version;
-}
+};
 
-VideoJS.isIE = function(){ return !+"\v1"; }
-VideoJS.isIpad = function(){ return navigator.userAgent.match(/iPad/i) != null; }
+VideoJS.isIE = function(){ return !+"\v1"; };
+VideoJS.isIpad = function(){ return navigator.userAgent.match(/iPad/i) !== null; };
 
 // Allows for binding context to functions
 // when using in event listeners and timeouts
 Function.prototype.context = function(obj) {
-  var method = this
+  var method = this;
   temp = function() {
-    return method.apply(obj, arguments)
-  }
- return temp
-}
+    return method.apply(obj, arguments);
+  };
+ return temp;
+};
